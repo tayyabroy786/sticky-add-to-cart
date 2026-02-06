@@ -1,16 +1,10 @@
-# Shopify App Template - Extension only
+# Sticky Add to Cart - Shopify Extension
 
-This is a template for building an [extension-only Shopify app](https://shopify.dev/docs/apps/build/app-extensions/build-extension-only-app). It contains the basics for building a Shopify app that uses only app extensions.
+A Shopify app extension that adds a sticky add-to-cart button to product pages, improving the shopping experience by keeping the purchase action always visible as customers scroll.
 
-This template doesn't include a server or the ability to embed a page in the Shopify Admin. If you want either of these capabilities, choose the [Remix app template](https://github.com/Shopify/shopify-app-template-remix) instead.
+## About This Extension
 
-Whether you choose to use this template or another one, you can use your preferred package manager and the Shopify CLI with [these steps](#installing-the-template).
-
-## Benefits
-
-Shopify apps are built on a variety of Shopify tools to create a great merchant experience. The [create an app](https://shopify.dev/docs/apps/getting-started/create) tutorial in our developer documentation will guide you through creating a Shopify app.
-
-This app template does little more than install the CLI and scaffold a repository.
+This extension-only Shopify app enhances your store's product pages with a persistent add-to-cart button that remains visible while customers browse product details. This improves conversion rates by making it easier for customers to add items to their cart without scrolling back to the top of the page.
 
 ## Getting started
 
@@ -20,31 +14,36 @@ This app template does little more than install the CLI and scaffold a repositor
 1. You must [create a Shopify partner account](https://partners.shopify.com/signup) if you don’t have one.
 1. You must create a store for testing if you don't have one, either a [development store](https://help.shopify.com/en/partners/dashboard/development-stores#create-a-development-store) or a [Shopify Plus sandbox store](https://help.shopify.com/en/partners/dashboard/managing-stores/plus-sandbox-store).
 
-### Installing the template
+### Installation
 
-This template can be installed using your preferred package manager:
+1. Clone this repository:
+
+```shell
+git clone <repository-url>
+cd sticky-add-to-cart
+```
+
+2. Install dependencies using your preferred package manager:
 
 Using yarn:
 
 ```shell
-yarn create @shopify/app
+yarn install
 ```
 
 Using npm:
 
 ```shell
-npm init @shopify/app@latest
+npm install
 ```
 
 Using pnpm:
 
 ```shell
-pnpm create @shopify/app@latest
+pnpm install
 ```
 
-This will clone the template and install the required dependencies.
-
-#### Local Development
+### Local Development
 
 [The Shopify CLI](https://shopify.dev/docs/apps/tools/cli) connects to an app in your Partners dashboard. It provides environment variables and runs commands in parallel.
 
