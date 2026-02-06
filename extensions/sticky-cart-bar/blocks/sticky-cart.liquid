@@ -2,6 +2,14 @@
 {{ 'sticky-cart.js' | asset_url | script_tag }}
 
 {% if product %}
+  <style>
+    #sticky-cart-bar .sticky-cart__btn {
+      background: {{ block.settings.button_bg_color }};
+      color: {{ block.settings.button_text_color }};
+      font-size: {{ block.settings.button_text_size }}px;
+    }
+  </style>
+
   <div
     id="sticky-cart-bar"
     class="sticky-cart"
@@ -14,7 +22,7 @@
       </div>
 
       <button class="sticky-cart__btn">
-        Add to cart
+        {{ block.settings.button_text }}
       </button>
     </div>
   </div>
@@ -22,8 +30,37 @@
 
 {% schema %}
 {
-  "name": "Sticky Add To Cart",
+  "name": "Sticky Add to Cart",
   "target": "section",
-  "settings": []
+  "settings": [
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Add to cart"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "button_text_size",
+      "label": "Button Text Size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    }
+  ]
 }
 {% endschema %}
