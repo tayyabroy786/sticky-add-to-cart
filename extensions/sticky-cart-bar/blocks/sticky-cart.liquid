@@ -8,22 +8,67 @@
       color: {{ block.settings.button_text_color }};
       font-size: {{ block.settings.button_text_size }}px;
     }
+    #sticky-cart-bar {
+      animation: {{ block.settings.animation_type }} {{ block.settings.animation_speed }}s ease-out;
+    }
+    {% if block.settings.show_shipping_bar %}
+    .sticky-cart__shipping-bar {
+      background: {{ block.settings.shipping_bar_color }};
+    }
+    {% endif %}
   </style>
 
   <div
     id="sticky-cart-bar"
     class="sticky-cart"
+    data-product-id="{{ product.id }}"
     data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+    data-scroll-threshold="{{ block.settings.scroll_threshold }}"
+    data-auto-hide="{{ block.settings.auto_hide_seconds }}"
+    data-hide-on-scroll-up="{{ block.settings.hide_on_scroll_up }}"
+    data-shipping-threshold="{{ block.settings.shipping_threshold }}"
+    data-show-shipping-bar="{{ block.settings.show_shipping_bar }}"
   >
+    {% if block.settings.show_shipping_bar %}
+    <div class="sticky-cart__shipping-bar">
+      <div class="sticky-cart__shipping-progress" style="width: 0%"></div>
+      <span class="sticky-cart__shipping-text">{{ block.settings.shipping_message }}</span>
+    </div>
+    {% endif %}
+
     <div class="sticky-cart__inner">
       <div class="sticky-cart__info">
         <strong>{{ product.title }}</strong>
-        <span>{{ product.price | money }}</span>
+        <span class="sticky-cart__price">{{ product.selected_or_first_available_variant.price | money }}</span>
       </div>
 
-      <button class="sticky-cart__btn">
-        {{ block.settings.button_text }}
-      </button>
+      <div class="sticky-cart__controls">
+        {% if product.has_only_default_variant == false %}
+        <select class="sticky-cart__variant-select">
+          {% for variant in product.variants %}
+            <option 
+              value="{{ variant.id }}" 
+              data-price="{{ variant.price }}"
+              {% if variant.id == product.selected_or_first_available_variant.id %}selected{% endif %}
+              {% unless variant.available %}disabled{% endunless %}
+            >
+              {{ variant.title }} - {{ variant.price | money }}
+              {% unless variant.available %}(Sold out){% endunless %}
+            </option>
+          {% endfor %}
+        </select>
+        {% endif %}
+
+        <div class="sticky-cart__quantity">
+          <button class="sticky-cart__qty-btn" data-action="decrease">-</button>
+          <input type="number" class="sticky-cart__qty-input" value="1" min="1" max="99">
+          <button class="sticky-cart__qty-btn" data-action="increase">+</button>
+        </div>
+
+        <button class="sticky-cart__btn">
+          {{ block.settings.button_text }}
+        </button>
+      </div>
     </div>
   </div>
 {% endif %}
@@ -33,6 +78,10 @@
   "name": "Sticky Add to Cart",
   "target": "section",
   "settings": [
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
     {
       "type": "text",
       "id": "button_text",
@@ -60,6 +109,93 @@
       "step": 1,
       "unit": "px",
       "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Animation Settings"
+    },
+    {
+      "type": "select",
+      "id": "animation_type",
+      "label": "Animation Type",
+      "options": [
+        { "value": "slideUp", "label": "Slide Up" },
+        { "value": "fadeIn", "label": "Fade In" },
+        { "value": "bounceIn", "label": "Bounce In" }
+      ],
+      "default": "slideUp"
+    },
+    {
+      "type": "range",
+      "id": "animation_speed",
+      "label": "Animation Speed",
+      "min": 0.2,
+      "max": 2,
+      "step": 0.1,
+      "unit": "s",
+      "default": 0.5
+    },
+    {
+      "type": "header",
+      "content": "Visibility Settings"
+    },
+    {
+      "type": "range",
+      "id": "scroll_threshold",
+      "label": "Show After Scroll (pixels)",
+      "min": 0,
+      "max": 1000,
+      "step": 50,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_scroll_up",
+      "label": "Hide When Scrolling Up",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "auto_hide_seconds",
+      "label": "Auto Hide After (0 = never)",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "s",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Free Shipping Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shipping_bar",
+      "label": "Show Free Shipping Progress",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "shipping_threshold",
+      "label": "Free Shipping Threshold",
+      "min": 0,
+      "max": 500,
+      "step": 5,
+      "unit": "$",
+      "default": 50
+    },
+    {
+      "type": "text",
+      "id": "shipping_message",
+      "label": "Shipping Message",
+      "default": "Add {amount} more for free shipping!"
+    },
+    {
+      "type": "color",
+      "id": "shipping_bar_color",
+      "label": "Shipping Bar Color",
+      "default": "#4CAF50"
     }
   ]
 }
