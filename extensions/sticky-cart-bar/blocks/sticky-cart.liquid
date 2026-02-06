@@ -1,0 +1,29 @@
+{{ 'sticky-cart.css' | asset_url | stylesheet_tag }}
+{{ 'sticky-cart.js' | asset_url | script_tag }}
+
+{% if product %}
+  <div
+    id="sticky-cart-bar"
+    class="sticky-cart"
+    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+  >
+    <div class="sticky-cart__inner">
+      <div class="sticky-cart__info">
+        <strong>{{ product.title }}</strong>
+        <span>{{ product.price | money }}</span>
+      </div>
+
+      <button class="sticky-cart__btn">
+        Add to cart
+      </button>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Sticky Add To Cart",
+  "target": "section",
+  "settings": []
+}
+{% endschema %}

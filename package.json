@@ -14,7 +14,7 @@
   "trustedDependencies": [
     "@shopify/plugin-cloudflare"
   ],
-  "author": "Tayyab",
+  "author": "Tayyab Khalid",
   "private": true,
   "workspaces": [
     "extensions/*"
